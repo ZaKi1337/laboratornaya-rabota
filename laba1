@@ -1,0 +1,45 @@
+#include <stdio.h>
+
+#include <conio.h>
+
+void main()
+
+{
+
+float L; // distancia
+
+float V1; // scorost pri posadke
+
+float t; // vremya
+
+printf("Vvedite L(km)= ");
+
+scanf("%f",&L);
+
+printf("Vvedite V1(km/h)= ");
+
+scanf("%f",&V1);
+
+if ((V1 <= 0) || (L <= 0))// proverka uslovii
+
+printf("protivorechie ysloviu zadachi \n");
+
+else
+
+{
+
+t=2*L/V1; // vichislenie po formule
+
+if (t <= 0)// proverka uslovii
+
+printf("protivorechie ysloviu zadachi \n");
+
+else
+
+printf("Vremya do ostanovki =%6.2f(sec)\n", t);
+
+}
+
+_getch();
+
+}
