@@ -1,0 +1,77 @@
+#include <stdio.h>
+
+#include <conio.h>
+
+void main()
+
+{
+
+float s; // summa ryada
+
+float a; // ocherednoy element ryada
+
+float c; // chislitel ocherednogo elementa
+
+float b; // znamenatel ocherednogo elementa
+
+float x; // vhodnoi parametr ryada
+
+int n; // chislo elementov ryada
+
+int i; // nomer ocherednogo elementa ryada
+
+// vvod parametrov ryada
+
+printf("Vvedite chislo elementov ryada n= ");
+
+scanf_s("%d", &n);
+
+printf("Vvedite vhodnoi parametr ryada x= ");
+
+scanf_s("%f", &x);
+
+if (n <= 0)// proverka uslovii
+
+printf("protivorechie ysloviu zadachi \n");
+
+else
+
+// prisvaevanie peremennih
+
+{
+
+s = 0;
+
+i = 0;
+
+c = 1;
+
+b = 1;
+
+// cikl
+
+while (i < n)
+
+{
+
+a = c / b;
+
+s = s + a;
+
+c = c * x;
+
+i = i + 1;
+
+b = b * i;
+
+}
+
+// vivod rezultata
+
+printf("Summa ryada s = %6.4f\n", s);
+
+}
+
+_getch();
+
+}
