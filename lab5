@@ -1,0 +1,64 @@
+# laboratornaya-rabota
+#include <stdio.h>
+
+#include <conio.h>
+
+#define N 10
+
+void main(void)
+
+{
+
+int x[N]; // массив из N элементов
+
+int max; // максимальмный элемент
+
+int i, a;
+
+// ввод массива
+
+for (i = 0; i < N; i++)
+
+scanf_s("%d", &x[i]);
+
+// Нахождение максимальногоэлемента
+
+max = -32628;
+
+for (i = 0; i < N; i++)
+
+{
+
+if (x[i] > max)
+
+{
+
+max = x[i];
+
+a = i;
+
+}
+
+}
+
+// изменение массива
+
+for (i = 0; i < a; i++)
+
+x[i] = 0;
+
+for (a; i < N; i++)
+
+x[i] = max;
+
+// вывод массива
+
+for (i = 0; i < N; i++)
+
+printf("%d ", x[i]);
+
+printf("\n");
+
+_getch();
+
+}
