@@ -1,0 +1,134 @@
+# laboratornaya-rabota
+#include <stdio.h>
+
+#include <conio.h>
+
+#define YES 1
+
+#define NO 0
+
+#define MAXLINE 1000
+
+void process_line(char buffer[]);
+
+void main(void)
+
+{
+
+char line[MAXLINE];
+
+gets_s(line);
+
+process_line(line);
+
+puts(line);
+
+_getch();
+
+}
+
+void process_line(char buffer[])
+
+{
+
+char c; // текущий символ
+
+int flag; // признак слова
+
+int i; // позиция текущего символа
+
+int start_a; // позиция начала предпоследнего слова
+
+int stop_a; // позиция конца предпоследнего слова
+
+int start_b; // позиция начала последнего слова
+
+int stop_b; // позиция конца последнего слова
+
+int j, k,b;
+
+flag = NO;
+
+start_a = 0;
+
+stop_a = 0;
+
+start_b = 0;
+
+stop_b = 0;
+
+i = 0;
+
+do
+
+{
+
+c = buffer[i]; // взять текущий символ из буфера
+
+if ((c == ' ' || c == '.' || c == ',' || c == '\n' || c == '\0'))
+
+{
+
+stop_b = i; // запомнить позицию конца слова
+
+if (flag == YES)
+
+{
+
+if (c == '\0')
+
+{
+
+k = start_a;
+
+for (j = stop_a; buffer[j] != '\0'; j++)
+
+{
+
+buffer[k] = buffer[j];
+
+k++;
+
+}
+
+buffer[k] = '\0';
+
+i = start_b;
+
+}
+
+}
+
+if (((buffer[i-1]>='A')&&(buffer[i-1]<='Z'))||((buffer[i-1]>='a')&&(buffer[i-1]<='z')))
+
+{
+
+flag = NO;
+
+start_a = start_b;
+
+stop_a = stop_b;
+
+}
+
+}
+
+else
+
+{
+
+if ((flag == NO)&& (((c>='A')&&(c<='Z'))||((c>='a')&&(c<='z'))))
+
+start_b = i;
+
+flag = YES;
+
+}
+
+i++;
+
+}
+
+while (c != '\0');
+
+}
