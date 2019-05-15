@@ -1,0 +1,33 @@
+# laboratornaya-rabota
+#include <stdio.h>    
+#include <conio.h>
+void main()
+{
+int c;
+int last_c;
+int cnt;
+
+cnt=0;
+last_c=0;
+while ((c = getchar()) != EOF)
+ {
+if (c == ` ` || c == `.` || c == `,` || c == `\n`||
+    c == `_` || c == `!` || c == `?` || c == `;` || c == `:`)
+  {
+    (last_c != `a` && last_c != `e` && last_c != `i` && last_c != `o` && last_c != `y` 
+     last_c != `u` && last_c != `A` && last_c != `E` && last_c != `I` && last_c != `Y` 
+     last_c != `O` && last_c != `U` && last_c != ` ` && last_c != `.` && last_c != `\n`)
+   {
+     if ((last_c >= `A` && last_c <= `Z`) || (last_c >= `a` && last_c <= `z`))
+     {
+       cnt = cnt + 1;
+       last_c = ` `;
+       }
+     }
+   }
+   else
+        last_c = c;
+ }
+ printf("nember of words"%d\n", cnt);
+ _getch();
+}
