@@ -1,33 +1,42 @@
 # laboratornaya-rabota
-#include <stdio.h>    
+#include <stdio.h>
 #include <conio.h>
-void main()
+
+int main()
 {
 int c;
 int last_c;
 int cnt;
+int nFlag;
 
 cnt=0;
 last_c=0;
+nFlag = 0;
 while ((c = getchar()) != EOF)
  {
 if (c == ' ' || c == '.' || c == ',' || c == '\n'||
     c == '_' || c == '!' || c == '?' || c == ';' || c == ':')
   {
-   if (last_c != 'a' && last_c != 'e' && last_c != 'i' && last_c != 'o' && last_c != 'y' 
-       last_c != 'u' && last_c != 'A' && last_c != 'E' && last_c != 'I' && last_c != 'Y' 
+   if (last_c != 'a' && last_c != 'e' && last_c != 'i' && last_c != 'o' && last_c != 'y' &&
+       last_c != 'u' && last_c != 'A' && last_c != 'E' && last_c != 'I' && last_c != 'Y' &&
        last_c != 'O' && last_c != 'U' && last_c != ' ' && last_c != '.' && last_c != '\n')
    {
-     if ((last_c >= 'A' && last_c <= 'Z') || (last_c >= 'a' && last_c <= 'z'))
+     if (((last_c >= 'A' && last_c <= 'Z') || (last_c >= 'a' && last_c <= 'z')) && nFlag == 1)
      {
        cnt = cnt + 1;
        last_c = ' ';
        }
      }
+     last_c = c;
+     nFlag = 0;
+   }
+   else if(c >= '0' && c <= '9')
+   {
+     nFlag = 1;
    }
    else
         last_c = c;
  }
- printf("number of words"%d\n", cnt);
+ printf("number of words %d\n", cnt);
  _getch();
 }
