@@ -21,7 +21,7 @@ if (c == ' ' || c == '.' || c == ',' || c == '\n'||
        last_c != 'u' && last_c != 'A' && last_c != 'E' && last_c != 'I' && last_c != 'Y' &&
        last_c != 'O' && last_c != 'U' && last_c != ' ' && last_c != '.' && last_c != '\n')
    {
-     if (((last_c >= 'A' && last_c <= 'Z') || (last_c >= 'a' && last_c <= 'z')) && nFlag == 1)
+     if (((last_c >= 'A' && last_c <= 'Z') || (last_c >= 'a' && last_c <= 'z')) && nFlag == 0)
      {
        cnt = cnt + 1;
        last_c = ' ';
