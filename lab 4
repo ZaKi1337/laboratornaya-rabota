@@ -1,134 +1,82 @@
-# laboratornaya-rabota
 #include <stdio.h>
 
-#include <conio.h>
-
 #define YES 1
-
 #define NO 0
-
 #define MAXLINE 1000
 
-void process_line(char buffer[]);
+void lineProcess(char buffer[]);
 
-void main(void)
-
+int main()
 {
+	char line[MAXLINE];
 
-char line[MAXLINE];
+	fgets(line, MAXLINE, stdin);
+	lineProcess(line);
+	fputs(line, stdout);
 
-gets_s(line);
-
-process_line(line);
-
-puts(line);
-
-_getch();
-
+	printf("press Enter to continue\n");
+	getchar();
+	return 0;
 }
 
-void process_line(char buffer[])
-
+void lineProcess(char buffer[])
 {
+	int i = -1;
+	int j = 0;
+	int flag = NO;		//признак слова
+	int nFlag = NO;		//признак цифры внутри слова
+	int maxLenght = 0;	//самое длинно слово
+	int maxStart = 0;	//начало самого длинного слова
+	int wordStart = 0;	//позици€ начала слова
 
-char c; // текущий символ
+	do {
+		i++;
 
-int flag; // признак слова
+		if ((buffer[i] >= 'a' && buffer[i] <= 'z') || (buffer[i] >= 'A' && buffer[i] <= 'Z'))
+		{
+			if (flag == NO)
+			{
+				flag = YES;
+				wordStart = i;
+			}
+		}
+		else if (buffer[i] >= '0' && buffer[i] <= '9')
+		{
+			nFlag = YES;
+		}
+		else
+		{
+			if (flag == YES && nFlag == NO)
+			{
+				if (commaF == YES)
+				{
+					j = i - 1;
+					i = wordStart;
+					wordStart--;
 
-int i; // позиция текущего символа
+					do {
+						j++;
+						wordStart++;
+						buffer[wordStart] = buffer[j];
+					} while (buffer[j] != '\0');
+		
+					while (wordStart < j)
+					{
+						wordStart++;
+						buffer[wordStart] = '\0';
+					}
+				}
+			}
 
-int start_a; // позиция начала предпоследнего слова
+			commaF = NO;
+			nFlag = NO;
+			flag = NO;
 
-int stop_a; // позиция конца предпоследнего слова
+			if (buffer[i] == ',')
+			{
+				commaF = YES;
+			}
+		}
 
-int start_b; // позиция начала последнего слова
-
-int stop_b; // позиция конца последнего слова
-
-int j, k,b;
-
-flag = NO;
-
-start_a = 0;
-
-stop_a = 0;
-
-start_b = 0;
-
-stop_b = 0;
-
-i = 0;
-
-do
-
-{
-
-c = buffer[i]; // взять текущий символ из буфера
-
-if ((c == ' ' || c == '.' || c == ',' || c == '\n' || c == '\0'))
-
-{
-
-stop_b = i; // запомнить позицию конца слова
-
-if (flag == YES)
-
-{
-
-if (c == '\0')
-
-{
-
-k = start_a;
-
-for (j = stop_a; buffer[j] != '\0'; j++)
-
-{
-
-buffer[k] = buffer[j];
-
-k++;
-
-}
-
-buffer[k] = '\0';
-
-i = start_b;
-
-}
-
-}
-
-if (((buffer[i-1]>='A')&&(buffer[i-1]<='Z'))||((buffer[i-1]>='a')&&(buffer[i-1]<='z')))
-
-{
-
-flag = NO;
-
-start_a = start_b;
-
-stop_a = stop_b;
-
-}
-
-}
-
-else
-
-{
-
-if ((flag == NO)&& (((c>='A')&&(c<='Z'))||((c>='a')&&(c<='z'))))
-
-start_b = i;
-
-flag = YES;
-
-}
-
-i++;
-
-}
-
-while (c != '\0');
-
+	} while (buffer[i] != '\0');
 }
