@@ -13,7 +13,7 @@ int main(void)
 	int i = 0;
 
 	printf("Enter your number N = ");
-	scanf_s("%i", &N);
+	scanf("%i", &N);
 	print_binary(N);
 	
 	for ( i = 0; i < sizeof(long) * 4; i++)
