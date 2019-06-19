@@ -1,124 +1,41 @@
 # laboratornaya-rabota
 #include <stdio.h>
-
-#include <conio.h>
-
-#define K 4
-
+#define K 3
 #define N 4
-
-void main(void)
-
+int main(void)
 {
-
 int x[K][N]; // массив из K на N элементов
-
-int S1; // сумма элементов над главной диагональю
-
-int S2; // сумма элементов под главной диагональю
-
+int min_i, min_j; // минимальный элемент
 int i, j;
-
+min_i = 0;
+min_j = 0;
 // ввод массива
-
 for (i = 0; i < K; i++)
-
 for (j = 0; j < N; j++)
-
 scanf_s("%d", &x[i][j]);
-
-// вывод введенного массива
-
+// наименьший элемент
 for (i = 0; i < K; i++)
-
-{
-
 for (j = 0; j < N; j++)
-
-printf("%4d ", x[i][j]);
-
-printf("\n");
-
-}
-
-// суммирование элементов
-
-S1 = 0;
-
-for (i = 0; i < K - 1; i++)
-
+if (x[i][j] < x[min_i][min_j])
 {
-
-j = i + 1;
-
-S1 = S1 + x[i][j];
-
+min_i = i;
+min_j = j;
 }
-
-printf("S1 = %d\n", S1);
-
-S2 = 0;
-
-for (i = 1; i < K ; i++)
-
+// выборочное обнуление элементов
+for (i = 0; i < K; i++)
 {
-
-j = i - 1;
-
-S2 = S2 + x[i][j];
-
+x[i][min_j] = 0;
 }
-
-printf("S2 = %d\n", S2);
-
-// сравнение сумм диагоналей
-
-if (S1 < S2)
-
+for (i = 0; i < N; i++)
 {
-
-for (i = 0; i < K - 1; i++)
-
-{
-
-j = i + 1;
-
-x[i][j] = 0;
-
+x[min_i][i] = 0;
 }
-
-}
-
-else
-
-{
-
-for (i = 1; i < K; i++)
-
-{
-
-j = i - 1;
-
-x[i][j] = 0;
-
-}
-
-}
-
 // вывод массива
-
 for (i = 0; i < K; i++)
-
 {
-
 for (j = 0; j < N; j++)
-
 printf("%4d ", x[i][j]);
-
 printf("\n");
-
 }
-
-_getch();
-
+return 0;
 }
