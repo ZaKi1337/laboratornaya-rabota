@@ -1,57 +1,28 @@
 # laboratornaya-rabota
 #include <stdio.h>
-#include <stdlib.h>
 
-#define mask 0x80000000
-
-void print_binary(long int num);
-
-int main(void)
+int main()
 {
-	long int N = 0;
-	unsigned int mask1 = mask, mask2 = mask >> 1;
-	int i = 0;
-
-	printf("Enter your number N = ");
-	scanf("%i", &N);
-	print_binary(N);
-	
-	for ( i = 0; i < sizeof(long) * 4; i++)
-	{
-		if ((N & mask1) && !(N & mask2) || !(N & mask1) && (N & mask2))
-		{
-			if (N & mask1)
-				N = (N | mask2) & ~mask1;
-			else
-				N = (N | mask1) & ~mask2;
-		}
-
-		mask1 = mask1 >> 2;
-		mask2 = mask2 >> 2;
-	}
-
-	print_binary(N);
-	system("pause");
-	return 0;
+    unsigned int mask=0xff;
+    int N,i,flag=0;
+    int buff[sizeof(long)];
+    scanf("%d",&N);
+    for(i=0;i<sizeof(long);i++)
+    {
+        buff[i]=N&mask;
+        printf("%d<<\n",N&mask);
+        N>>=8;
+    }
+    for(i=0;i<sizeof(long)-2;i++)
+    {
+        if(buff[i+1]-buff[i]!=buff[i+2]-buff[i+1])
+        {
+            flag=1;
+        }
+    }
+    if(flag==1)
+        printf("no\n");
+    else printf("yes\n");
+    return 0;
 }
 
-void print_binary(long int num)
-{
-	int i = 0;
-	unsigned int mask1 = mask;
-	printf("\nbinary N: ");
-	for (i = 1; i <= 32; i++)
-	{
-		if ((num & mask1) == 0)
-			printf("0");
-		else
-			printf("1");
-
-		if ((i % 8) == 0)
-			printf(" ");
-
-		mask1 = mask1 >> 1;
-	}
-	printf("\n");
-	return;
-}
