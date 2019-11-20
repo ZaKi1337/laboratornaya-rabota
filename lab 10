@@ -1,0 +1,103 @@
+# laboratornaya-rabota
+#pragma warning (disable : 4996)
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+#define TRUE 1
+#define FALSE 0
+
+int main(void)
+{
+	FILE *in, *out;
+	char **strlist, *str, *tmp, c;
+	int strcnt, strlen, flag, i, j;
+	// открываем файлы и проверяем ошибки открытия
+	if ((in = fopen("infile.txt", "r")) == NULL || (out = fopen("outfile.txt", "w")) == NULL)
+	{
+		printf("File can`t open\n");
+		getchar();
+		return 0;
+	}
+
+	strlist = NULL;	// массив строк
+	str = NULL;		// текущая строка
+	tmp = NULL;		// временный указатель на строку
+	strcnt = 0;		// количество строк
+	strlen = 0;		// длина строки
+	flag = FALSE;	// флаг опущен
+	// повторять пока не конец файла
+	do {
+		c = fgetc(in);	// берем символ
+		// если символ конца строки или файла
+		if (c == '\n' || c == EOF)
+		{
+			// если флаг опущен
+			if (flag == FALSE)
+			{
+				free(str);	// освобождаем строку
+				continue;	// переходим на следующее повторение
+			}
+
+			str = (char*)realloc(str, (strlen + 2) * sizeof(char));	// выделяем память
+			str[strlen++] = '\n';		// записываем символ перевода строки
+			str[strlen] = '\0';			// записываем символ конца строки
+
+			strlist = (char**)realloc(strlist, (strcnt + 1) * sizeof(char*));	// выделяем память под строку
+			strlist[strcnt++] = str;	// записываем строку в массив
+			str = NULL;		// обнуляем указатель
+			strlen = 0;		// обнуляем длину строки
+			flag = FALSE;	// опускаем флаг
+		}
+		// если не конец строки
+		else
+		{
+			// если символ буква и флаг опущен
+			if ((c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z') && flag == FALSE)
+				flag = TRUE;	// поднимаем флаг
+			// иначе если флаг опущен
+			else if (flag == FALSE)
+				continue;	// переходим на следующее повторение
+
+			str = (char*)realloc(str, (strlen + 1) * sizeof(char));	// выделяем память под символ
+			str[strlen++] = c;	// записываем символ
+		}
+
+	} while (c != EOF);
+	
+	fclose(in);	// закрываем файл
+
+	// цикл сортировки
+	for (i = 0; i < strcnt; i++)
+	{
+		flag = TRUE;	// поднимаем флаг
+
+		// повторяем пока не сравним все строки из неотсортированной области
+		for (j = 0; j < strcnt - i - 1; j++)
+		{
+			// если текущая строка по алфавиту должна быть позже следующей
+			if (strcmp(strlist[j], strlist[j + 1]) > 0)
+			{
+				flag = FALSE;	// опускаем флаг
+				// меняем строки местами
+				tmp = strlist[j];	
+				strlist[j] = strlist[j + 1];
+				strlist[j + 1] = tmp;
+			}
+		}
+		// если флаг не был опущен
+		if (flag == TRUE)
+			break;	// завершаем сортировку
+	}
+	// пока не пройдем все строки
+	for (i = 0; i < strcnt; i++)
+	{
+		fputs(strlist[i], out);		// выводим строку
+		free(strlist[i]);			// освобождаем память
+	}
+
+	fclose(out);	// закрываем файл
+	free(strlist);	// освобождаем память
+	printf("Program complete\n");
+	getchar();
+	return 0;
+}
