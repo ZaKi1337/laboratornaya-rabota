@@ -1,0 +1,180 @@
+# laboratornaya-rabota
+#pragma warning (disable : 4996)
+#include <stdio.h>
+#include <string.h>
+#include <Windows.h>
+
+char *types[14] =
+{
+"char\0", "double\0", "float\0", "int\0", "long\0", "short\0", "signed\0", "unsigned\0",
+"auto\0", "const\0", "extern\0", "register\0", "static\0", "volatile\0"
+};
+
+int main(void)
+{
+	HANDLE hStd = GetStdHandle(STD_OUTPUT_HANDLE);
+	WORD stdfgColor = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
+	WORD hlfgColor = FOREGROUND_GREEN;
+	FILE *inf = NULL;
+	char *word = NULL, c = '\0';
+	int i, len = 0, bkt = 0, typeflag = FALSE, adflag = TRUE;
+
+	if ((inf = fopen("infile.c", "r")) == NULL)
+	{
+		printf("File open error\n");
+		system("pause");
+		return -1;
+	}
+
+	while ((c = fgetc(inf)) != EOF)
+	{
+		if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c == '_')
+		{
+			word = (char*)realloc(word, (len + 1) * sizeof(char));
+			word[len++] = c;
+		}
+		else
+		{
+			if (word != NULL)
+			{
+				word = (char*)realloc(word, (len + 1) * sizeof(char));
+				word[len] = '\0';
+
+				typeflag = FALSE;
+				for (i = 0; i < 14; i++)
+					if (strcmp(types[i], word) == 0)
+						typeflag = TRUE;	// поднимаем флаг ключевого слова типа данных
+
+				// если слово относитс¤ к типу данных и нет запрета на объ¤влеине в данном месте
+				if (typeflag == TRUE)
+				{
+					adflag = TRUE;		// поднимаем флаг объ¤влени¤ переменных
+					// выводим слово
+					for (i = 0; word[i] != '\0'; i++)
+						fputc(word[i], stdout);
+				}
+				// если слово не тип данных, но подн¤т флаг объ¤влени¤ переменных
+				else if (adflag == TRUE)
+				{
+					// проходим разделители, сто¤щие за именем и добавл¤ем их к массиву с именем
+					while (c == ' ' || c == '\t')
+					{
+						word = (char*)realloc(word, (len + 1) * sizeof(char));
+						word[len++] = c;
+						c = fgetc(inf);
+					}
+					word = (char*)realloc(word, (len + 1) * sizeof(char));
+					word[len] = '\0';
+
+					// если сразу за именем не идет (, то это определение переменной
+					if (c != '(')
+						SetConsoleTextAttribute(hStd, hlfgColor);	// мен¤ем цвет
+					else
+						adflag = FALSE;
+
+					// выводим слово
+					for (i = 0; word[i] != '\0'; i++)
+						fputc(word[i], stdout);
+
+					SetConsoleTextAttribute(hStd, stdfgColor);
+				}
+				else
+				{
+					adflag = FALSE;		// опускаем флаг объ¤влени¤ переменных
+					// выводим слово
+					for (i = 0; word[i] != '\0'; i++)
+						fputc(word[i], stdout);
+				}
+
+				free(word);
+				word = NULL;
+				len = 0;
+			}
+
+			if (c == '{')
+			{
+				fputc(c, stdout);
+				bkt++;
+
+				while (bkt != 0)
+				{
+					c = fgetc(inf);
+					if (c == '{')
+						bkt++;
+					else if (c == '}')
+						bkt--;
+					fputc(c, stdout);
+				}
+			}
+			else if (c == ';')
+			{
+				adflag = FALSE;
+				fputc(c, stdout);
+			}
+			else if (c == '\'')
+			{
+				fputc(c, stdout);
+				c = fgetc(inf);
+				fputc(c, stdout);
+				c = fgetc(inf);
+				fputc(c, stdout);
+			}
+			else if (c == '\"')
+			{
+				fputc(c, stdout);
+
+				while ((c = fgetc(inf)) != '\"')
+					fputc(c, stdout);
+				fputc(c, stdout);
+			}
+			else if (c == '#')
+			{
+				fputc(c, stdout);
+
+				while ((c = fgetc(inf)) != '\n')
+					fputc(c, stdout);
+				fputc(c, stdout);
+			}
+			else if (c == '/')
+			{
+				fputc(c, stdout);
+				if ((c = fgetc(inf)) == '/')
+				{
+					fputc(c, stdout);
+					while ((c = fgetc(inf)) != '\n')
+						fputc(c, stdout);
+					fputc(c, stdout);
+				}
+				else if (c == '*')
+				{
+					fputc(c, stdout);
+					while (TRUE)
+					{
+						if ((c = fgetc(inf)) == '*')
+						{
+							fputc(c, stdout);
+							if ((c = fgetc(inf)) == '/')
+							{
+								fputc(c, stdout);
+								break;
+							}
+						}
+						fputc(c, stdout);
+					}
+				}
+				else
+					ungetc(c, inf);
+			}
+			else
+			{
+				fputc(c, stdout);
+			}
+		}
+	}
+	fclose(inf);
+
+	printf("\n\n\n=================================================\n");
+	printf("Program complete\n");
+	system("pause");
+	return 0;
+}
