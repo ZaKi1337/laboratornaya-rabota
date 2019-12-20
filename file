@@ -1,0 +1,24 @@
+#include <stdio.h>
+
+int x;
+char min = 0;
+float max = (float)10;
+
+// int max = 82;
+
+
+int main(void)
+{
+	float H, D, V;
+	int max;
+
+	printf("V = %.3f/n/n",V);
+	return 0;
+}
+/*
+int bind;
+char c;
+*/
+
+
+int var;
